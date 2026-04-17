@@ -14,4 +14,14 @@ module.exports = {
     const data = await gachaService.history(req.params.userId);
     res.json(data);
   },
+
+  prizes: async (req, res) => {
+    const data = await gachaService.getPrizes();
+    res.json(data);
+  },
+
+  winners: async (req, res) => {
+    const data = await gachaService.getWinners();
+    res.json(data);
+  },
 };

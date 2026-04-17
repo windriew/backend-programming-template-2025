@@ -8,6 +8,18 @@ const prizes = [
   { name: 'Pulsa 50k', quota: 500 },
 ];
 
+const maskName = (name) => {
+  if (!name) return '';
+
+  return name
+    .split('')
+    .map((char, i) => {
+      if (i === 0 || i === name.length - 1) return char;
+      return '*';
+    })
+    .join('');
+};
+
 module.exports = {
   gacha: async (userId) => {
     const count = await gachaRepo.countToday(userId);
@@ -44,4 +56,28 @@ module.exports = {
   },
 
   history: (userId) => gachaRepo.findByUser(userId),
+
+  getPrizes: async () => {
+    const result = await Promise.all(
+      prizes.map(async (p) => {
+        const used = await gachaRepo.countPrize(p.name);
+
+        return {
+          name: p.name,
+          remaining: p.quota - used,
+        };
+      })
+    );
+
+    return result;
+  },
+
+  getWinners: async () => {
+    const data = await gachaRepo.getWinners();
+
+    return data.map((d) => ({
+      user: maskName(d.userId),
+      prize: d.prize,
+    }));
+  },
 };

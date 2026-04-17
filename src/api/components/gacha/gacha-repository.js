@@ -18,4 +18,6 @@ module.exports = {
   create: (data) => Gacha.create(data),
 
   findByUser: (userId) => Gacha.find({ userId }),
+
+  getWinners: () => Gacha.find({ prize: { $ne: null } }),
 };
