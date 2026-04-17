@@ -9,7 +9,7 @@ module.exports = () => {
 
   books(app);
   users(app);
-  gachaRoutes(app); // 🔥 penting
+  gachaRoutes(app);
 
   return app;
 };
